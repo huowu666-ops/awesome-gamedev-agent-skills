@@ -1,0 +1,314 @@
+[
+  {
+    "viewport": "390x844",
+    "check": "game starts",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "V27 through V34 aliases",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "default quest safe",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "tracker UI present",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "no sideways scroll",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "audit",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "seven quest choices",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "quest click saved",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "river progress shown",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "persisted in old save key",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "quota rollback",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "unknown id rejected",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "V33 save migration",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "malicious id normalized",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "NPC quest",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "NPC progress",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "real quest-guided zone switch",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "390x844",
+    "check": "no JS runtime errors",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "game starts",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "V27 through V34 aliases",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "default quest safe",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "tracker UI present",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "no sideways scroll",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "audit",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "seven quest choices",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "quest click saved",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "river progress shown",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "persisted in old save key",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "quota rollback",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "unknown id rejected",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "V33 save migration",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "malicious id normalized",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "NPC quest",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "NPC progress",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "375x667",
+    "check": "no JS runtime errors",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "game starts",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "V27 through V34 aliases",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "default quest safe",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "tracker UI present",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "no sideways scroll",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "audit",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "seven quest choices",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "quest click saved",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "river progress shown",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "persisted in old save key",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "quota rollback",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "unknown id rejected",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "V33 save migration",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "malicious id normalized",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "NPC quest",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "NPC progress",
+    "passed": true,
+    "detail": ""
+  },
+  {
+    "viewport": "320x640",
+    "check": "no JS runtime errors",
+    "passed": true,
+    "detail": ""
+  }
+]
