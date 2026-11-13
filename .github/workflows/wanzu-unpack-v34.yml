@@ -1,0 +1,115 @@
+name: 展开万族争道 V34 项目包
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/wanzu-unpack-v34.yml'
+      - 'projects/wanzu-zhengdao/wanzu-zhengdao-v34-complete.zip'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wanzu-v34-unpack
+  cancel-in-progress: false
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Extract V34 project files without overwriting existing files
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          import re
+          import stat
+          import zipfile
+
+          archive = Path('projects/wanzu-zhengdao/wanzu-zhengdao-v34-complete.zip')
+          target = Path('projects/wanzu-zhengdao')
+          if not archive.is_file():
+              raise SystemExit(f'找不到上传的压缩包: {archive}')
+
+          with zipfile.ZipFile(archive) as z:
+              files = [f for f in z.infolist() if not f.is_dir()]
+              if len(files) > 500 or sum(f.file_size for f in files) > 80 * 1024 * 1024:
+                  raise SystemExit('压缩包文件数量或解压体积超出安全限制')
+              for f in files:
+                  name = PurePosixPath(f.filename.replace('\\', '/'))
+                  if name.is_absolute() or '..' in name.parts or not name.parts:
+                      raise SystemExit(f'发现不安全的文件路径: {f.filename}')
+                  if (f.external_attr >> 16) & 0o170000 == stat.S_IFLNK:
+                      raise SystemExit(f'不允许符号链接: {f.filename}')
+                  if f.file_size > 8 * 1024 * 1024:
+                      raise SystemExit(f'单个文件过大: {f.filename}')
+
+              index_files = [PurePosixPath(f.filename.replace('\\', '/')) for f in files
+                             if PurePosixPath(f.filename.replace('\\', '/')).name.lower() == 'index.html']
+              if not index_files:
+                  index_files = [PurePosixPath(f.filename.replace('\\', '/')) for f in files
+                                 if f.filename.lower().endswith('.html') and
+                                 ('v34' in f.filename.lower() or 'wanzu' in f.filename.lower() or '万族争道' in f.filename)]
+              if not index_files:
+                  raise SystemExit('压缩包内找不到 V34 游戏 HTML；未修改仓库')
+
+              # Prefer the game folder over a nested demo/sample index.
+              def rank(p):
+                  s = str(p).lower()
+                  return (0 if 'wanzu' in s or '万族争道' in s else 1, len(p.parts))
+              game_html = sorted(index_files, key=rank)[0]
+              prefix = game_html.parent
+              print(f'检测到游戏入口: {game_html}；目录前缀: {prefix}')
+              allowed = {'.html','.md','.txt','.css','.js','.json','.py','.sh','.yml','.yaml','.png','.jpg','.jpeg','.webp','.zip','.svg','.gitignore'}
+              skip_names = {'.env', '.env.local', 'id_rsa', 'id_ed25519'}
+              written = []
+              skipped = []
+              for f in files:
+                  raw = PurePosixPath(f.filename.replace('\\', '/'))
+                  try:
+                      relative = raw.relative_to(prefix)
+                  except ValueError:
+                      continue
+                  if not relative.parts or '.git' in relative.parts or '__MACOSX' in relative.parts:
+                      continue
+                  if relative.name in skip_names or relative.suffix.lower() in {'.pem','.p12','.key'}:
+                      continue
+                  if relative.suffix.lower() not in allowed and relative.name != '.gitignore':
+                      continue
+                  if raw == game_html:
+                      relative = PurePosixPath('index.html')
+                  destination = target.joinpath(*relative.parts)
+                  # Never replace any existing file, including README and the uploaded ZIP.
+                  if destination.exists():
+                      skipped.append(str(destination))
+                      continue
+                  destination.parent.mkdir(parents=True, exist_ok=True)
+                  with z.open(f) as source, destination.open('xb') as out:
+                      import shutil
+                      shutil.copyfileobj(source, out)
+                  written.append(str(destination))
+              if not (target / 'index.html').is_file():
+                  raise SystemExit('未能得到 index.html；检查 ZIP 是否包含正确项目')
+              print(f'新增 {len(written)} 个文件；跳过已有 {len(skipped)} 个文件')
+              for p in written: print('ADDED', p)
+              for p in skipped: print('KEPT ', p)
+          PY
+
+      - name: Commit game source and assets
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- projects/wanzu-zhengdao/
+          if git diff --cached --quiet; then
+            echo '全部文件已经存在，无需提交。'
+          else
+            git commit -m 'feat(wanzu): unpack V34 game sources without replacing agent skills'
+            git push origin HEAD:main
+          fi
