@@ -1,0 +1,35 @@
+name: Wanzu V46 verification
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'projects/wanzu-zhengdao/v46/**'
+      - '.github/workflows/wanzu-v46-verify.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild, compare and test V46
+        run: |
+          set -eu
+          release="$GITHUB_WORKSPACE/projects/wanzu-zhengdao/v46"
+          unzip -q "$release/Wanzu-V46-dev.zip" -d "$RUNNER_TEMP/wanzu"
+          cd "$RUNNER_TEMP/wanzu/projects/wanzu-zhengdao"
+          python scripts/build_v46.py
+          cmp index.html "$release/index.html"
+          node tests/test_v41_logic.cjs
+          node tests/test_v42_logic.cjs
+      - name: Touch UI and reload on Chromium
+        run: |
+          python -m pip install playwright==1.51.0
+          python -m playwright install --with-deps chromium
+          cd "$RUNNER_TEMP/wanzu/projects/wanzu-zhengdao"
+          python tests/test_v44_touch.py
+          python tests/test_v45_touch.py
+          python tests/test_v46_transfer.py
+
+
+
