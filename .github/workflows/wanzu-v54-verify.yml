@@ -15,7 +15,7 @@ jobs:
       - name: Rebuild, compare and test V54
         run: |
           set -eu
-          release="$GITHUB_WORKSPACE/projects/wanzu-zhengdao/v53"
+          release="$GITHUB_WORKSPACE/projects/wanzu-zhengdao/v54"
           unzip -q "$release/Wanzu-V54-dev.zip" -d "$RUNNER_TEMP/wanzu"
           cd "$RUNNER_TEMP/wanzu/projects/wanzu-zhengdao"
           python scripts/build_v54.py
