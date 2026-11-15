@@ -26,7 +26,7 @@ jobs:
             p.goto(max((p for p in Path('projects/wanzu-zhengdao').glob('v*/index.html') if p.parent.name[1:].isdigit()), key=lambda p:int(p.parent.name[1:])).resolve().as_uri(),wait_until='commit')
             p.get_by_role('button',name='进入自由修行',exact=True).tap()
             for i in range(4):
-             p.evaluate('(i)=>{let s=V50.getState(); s.day=7*(i+1); s.ferryStage='lamp-dawn'; s.riverChoices=[2,2,2,2];s.riverChoices[i]=0;V50.debugState(s)}',i)
+             p.evaluate('(i)=>{let s=V50.getState(); s.day=7*(i+1); s.ferryStage="lamp-dawn"; s.riverChoices=[2,2,2,2];s.riverChoices[i]=0;V50.debugState(s)}',i)
              p.get_by_role('button',name='本季来信',exact=True).tap()
              buttons=p.get_by_role('dialog').locator('[data-do^="riverReply:"]')
              assert buttons.count() == 2
