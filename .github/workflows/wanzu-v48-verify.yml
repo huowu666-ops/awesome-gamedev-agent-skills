@@ -35,7 +35,7 @@ jobs:
         run: |
           set -eu
           unzip -q projects/wanzu-zhengdao/v48/Wanzu-V48-dev.zip -d "$RUNNER_TEMP/wanzu"
-          python -m pip install playwright==1.51.0
-          python -m playwright install --with-deps chromium
+          python -m pip install playwright==1.55.0
+          google-chrome --version
           cd "$RUNNER_TEMP/wanzu/projects/wanzu-zhengdao"
-          python "tests/test_${{ matrix.suite }}.py"
+          DEBUG=pw:api WANZU_BROWSER_CHANNEL=chrome python "tests/test_${{ matrix.suite }}.py"
