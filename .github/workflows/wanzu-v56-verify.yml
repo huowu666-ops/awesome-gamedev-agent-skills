@@ -1,0 +1,45 @@
+name: Wanzu V56 verification
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'projects/wanzu-zhengdao/v56/**'
+      - '.github/workflows/wanzu-v56-verify.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild, compare and test V56
+        run: |
+          set -eu
+          release="$GITHUB_WORKSPACE/projects/wanzu-zhengdao/v56"
+          unzip -q "$release/Wanzu-V56-dev.zip" -d "$RUNNER_TEMP/wanzu"
+          cd "$RUNNER_TEMP/wanzu/projects/wanzu-zhengdao"
+          python scripts/build_v56.py
+          cmp index.html "$release/index.html"
+          node tests/test_v41_logic.cjs
+          node tests/test_v42_logic.cjs
+          node tests/test_v49_calendar.cjs
+  touch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [v44_touch, v45_touch, v46_transfer, v47_bridge, v48_interact, v49_touch, v50_reply_retry, v51_autumn_bridge, v52_legacy_import, v53_spring_echo, v54_letter_archive, v55_dungeon_letter, v56_reread]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run offline touch suite
+        run: |
+          set -eu
+          unzip -q projects/wanzu-zhengdao/v56/Wanzu-V56-dev.zip -d "$RUNNER_TEMP/wanzu"
+          python -m pip install playwright==1.55.0
+          google-chrome --version
+          cd "$RUNNER_TEMP/wanzu/projects/wanzu-zhengdao"
+          DEBUG=pw:api WANZU_BROWSER_CHANNEL=chrome python "tests/test_${{ matrix.suite }}.py"
+
+
+
