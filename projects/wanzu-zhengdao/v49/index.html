@@ -7992,7 +7992,10 @@ setTimeout(v19RefreshText,0);
 const v23TitleElement=document.querySelector('head title');
 if(v23TitleElement&&typeof MutationObserver==='function'){
   new MutationObserver(()=>{
-    if(!FT.on&&document.title!=='万族争道 · V29 四时山居')v19RefreshText();
+    if (FT.on) return;
+    const title = document.body.classList.contains('v27-open')
+      ? '万族争道 · V49 渡口回信日历' : '万族争道 · V29 四时山居';
+    if (document.title !== title) document.title = title;
   }).observe(v23TitleElement,{childList:true,subtree:true,characterData:true});
 }
 
