@@ -1,0 +1,45 @@
+name: Wanzu seasonal reply first screen
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'projects/wanzu-zhengdao/v*/index.html'
+      - '.github/workflows/wanzu-letter-first-screen.yml'
+permissions:
+  contents: read
+jobs:
+  first-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip install playwright==1.55.0
+      - name: Check both reply targets in all four seasons without scrolling
+        shell: python
+        run: |
+          from playwright.sync_api import sync_playwright
+          from pathlib import Path
+          with sync_playwright() as pw:
+           b=pw.chromium.launch(channel='chrome')
+           for w,h in [(320,568),(375,667),(390,844)]:
+            p=b.new_page(offline=True,has_touch=True,viewport={'width':w,'height':h})
+            p.goto(max((p for p in Path('projects/wanzu-zhengdao').glob('v*/index.html') if p.parent.name[1:].isdigit()), key=lambda p:int(p.parent.name[1:])).resolve().as_uri(),wait_until='commit')
+            p.get_by_role('button',name='进入自由修行',exact=True).tap()
+            for i in range(4):
+             p.evaluate('(i)=>{let s=V50.getState(); s.day=7*(i+1); s.ferryStage='lamp-dawn'; s.riverChoices=[2,2,2,2];s.riverChoices[i]=0;V50.debugState(s)}',i)
+             p.get_by_role('button',name='本季来信',exact=True).tap()
+             buttons=p.get_by_role('dialog').locator('[data-do^="riverReply:"]')
+             assert buttons.count() == 2
+             for reply in buttons.all():
+              visible = reply.evaluate("""b => {
+                const r = b.getBoundingClientRect();
+                const center = document.elementFromPoint(r.x + r.width/2, r.y + r.height/2);
+                return r.left >= 0 && r.right <= innerWidth && r.top >= 0 &&
+                  r.bottom <= innerHeight && b.contains(center);
+              }""")
+              assert visible, (w,h,i,reply.inner_text())
+             buttons.last.tap()
+             assert p.evaluate('V50.getState().riverChoices') == [2,2,2,2]
+             assert '末封 · 渡口有人' in p.get_by_role('dialog').inner_text()
+             p.get_by_role('button',name='收起信册').tap()
+            p.close()
