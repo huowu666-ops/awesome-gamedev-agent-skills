@@ -22,18 +22,20 @@ jobs:
           cmp index.html "$release/index.html"
           node tests/test_v41_logic.cjs
           node tests/test_v42_logic.cjs
-      - name: Touch UI and reload on Chromium
+  touch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [v44_touch, v45_touch, v46_transfer, v47_bridge, v48_interact]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run offline touch suite
         run: |
+          set -eu
+          unzip -q projects/wanzu-zhengdao/v48/Wanzu-V48-dev.zip -d "$RUNNER_TEMP/wanzu"
           python -m pip install playwright==1.51.0
           python -m playwright install --with-deps chromium
           cd "$RUNNER_TEMP/wanzu/projects/wanzu-zhengdao"
-          python tests/test_v44_touch.py
-          python tests/test_v45_touch.py
-          python tests/test_v46_transfer.py
-          python tests/test_v47_bridge.py
-          python tests/test_v48_interact.py
-
-
-
-
-
+          python "tests/test_${{ matrix.suite }}.py"
